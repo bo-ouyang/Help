@@ -27,12 +27,12 @@ class ToolController extends Controller
                 $cosClient = new Client(array(
                     'region' => 'ap-chengdu', #地域，如ap-guangzhou,ap-beijing-1
                     'credentials' => array(
-                        'secretId' => 'AKIDWm6C2dIb2JMQFn6AIAm7UdW1Geniu0Qa',
-                        'secretKey' => 'tWJq778uRhisnRoCOJr9fxyiD2btuzuY',
+                        'secretId' => env('TXCloudUploadSecretId'),
+                        'secretKey' => env('TXCloudUploadSecretKey'),
                     ),
                 ));
                 try {
-                    $bucket = 'help-1300617916';
+                    $bucket = env('help-1300617916');
                     //$bucket = 'oyb-1258356039';
                     $uid = 0;
                     $key = uniqid() . '_' . $uid . '.' . $ext;
