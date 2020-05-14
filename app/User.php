@@ -28,7 +28,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'api_token',
+        'password', 'api_token','delete_at','open_id'
     ];
 
     /**
@@ -38,15 +38,15 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $casts = [
         'email_verified_at' => 'U',
-        'created_at'        =>'datetime:Y:m:d H:i:s',
-        'updated_at'        =>'datetime:Y:m:d H:i:s'
+        'created_at'        =>'datetime:Y-m-d H:i:s',
+        'updated_at'        =>'datetime:Y-m-d H:i:s'
     ];
 
     public function userLevelConf(){
         return $this->hasOne('UserLevelConfModel','id','level');
     }
     public function userWechat(){
-        return $this->hasOne('UserWechatModel','open_id','open_id');
+        return $this->hasOne('App\Http\Model\UserWechatModel','open_id','open_id');
     }
 
 

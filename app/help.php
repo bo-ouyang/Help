@@ -43,5 +43,18 @@ function getPivot($left,$right){
     return $left;
 
 }
+function getPushUrl($domain, $streamName, $key = null, $time = null){
 
-var_dump(quickSort([2, 5, 6, 12, 1]));
+    if($key && $time){
+        $txTime = strtoupper(base_convert(strtotime($time),10,16));
+        //txSecret = MD5( KEY + streamName + txTime )
+        $txSecret = md5($key.$streamName.$txTime);
+        $ext_str = "?".http_build_query(array(
+                "txSecret"=> $txSecret,
+                "txTime"=> $txTime
+            ));
+    }
+    return "rtmp://".$domain."/live/".$streamName . (isset($ext_str) ? $ext_str : "");
+}
+
+//var_dump(quickSort([2, 5, 6, 12, 1]));

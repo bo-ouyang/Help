@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Model\UserWechat;
+use App\Http\Model\UserLevelConfModel;
+use App\Http\Model\UserWechatModel;
 use EasyWeChat\Factory;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 
@@ -89,6 +90,7 @@ class LoginController extends Controller
         $app = Factory::miniProgram($mini);
         try{
             $user = $app->auth->session($data['code']);
+            //print_r($user);
         }catch (InvalidConfigException $invalidConfigException){
             return response()->json([
                 'success' => false,
@@ -96,10 +98,11 @@ class LoginController extends Controller
             ]);
         }
 
-        $ret = DB::table('user_wechat')->where('open_id',$user['openid'])->first();
-        unset($data['user']['language']);
+
+        //$ret = DB::table('user_wechat')->where('open_id',$user['openid'])->first();unset($data['user']['language']);
         //print_r($data['user']);
-        $userWx = UserWechat::updateOrCreate(
+        unset($data['user']['language']);
+        $userWx = UserWechatModel::updateOrCreate(
             ['open_id' => $user['openid']],
             $data['user']
         );
@@ -109,16 +112,17 @@ class LoginController extends Controller
         $user->save();
         $jwt_token = null;
         //auth('api')->setUser($user['openid']);
-        $jwt_token = auth('api')->tokenById($user->open_id);
 
-        return response()->json([
-            'success' => $jwt_token,
-            'msg' => $data['user'],
-        ]);
-
+        //$retUser = User::with('userWechat')->where('open_id',$user->open_id)->first()->toArray();
+        $jwt_token = auth()->login($user);
+        $token = auth('api')->tokenById($user->id);
+        //$userLevelConf = UserLevelConfModel::all();
         return response()->json([
             'success' => true,
-            'token' => $jwt_token,
+            'username'=>$user->username?$user->username:$userWx->nickName,
+            'token'=>$token,
+            'jwt_token'=>$jwt_token,
+            'user'=>$user
         ]);
     }
 }

@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 
 
+use App\User;
 use Illuminate\Http\Request;
 
 use Illuminate\Http\UploadedFile;
@@ -58,5 +59,12 @@ class ToolController extends Controller
                 return response()->json(['status'=>1,'path'=>$result['Location']]);
 
 
+        }
+
+        public function video(){
+            $test = User::with('userWechat')->where('open_id','ow-xH47ygRe-dSQquy8c8s6pbfI8')->first()->toArray();
+            print_r($test);
+            //getPushUrl()
+            //echo getPushUrl("help.ouyang.wiki","ouyang","cce2af0c1ec7878ecc04840a24e45c38",date('Y-m-d H:m:i',time()));
         }
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 
-use App\Http\Service\User;
+
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
@@ -28,15 +30,23 @@ class UserController extends Controller
     public function index(Request $request){
         return response()->json([JWTAuth::user(),$request->header()]);
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @URL=/auth
+     */
     public function getAuthUser(Request $request)
     {
-        $this->validate($request, [
+        /*$this->validate($request, [
             'token' => 'required'
-        ]);
-        $guard = auth('api');
-        $user = $guard->authenticate($request->token);
+        ]);*/
+        //echo 111;
+        now();
 
-        return response()->json(['user' => $user]);
+        $user = auth('api')->user();
+        $wx = User::find($user->id);
+        return response()->json(['user' => $wx,'user_wechat'=>$wx->userWechat,'token'=>auth('api')->tokenById($user->id)]);
     }
 
     /**

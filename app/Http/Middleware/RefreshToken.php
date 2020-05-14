@@ -29,7 +29,7 @@ class RefreshToken extends BaseMiddleware
     public function handle($request,\Closure $next){
        // echo 666;
         $this->checkForToken($request);
-       // echo 111;
+        //echo 111;
         try{
             if($this->auth->parseToken()->authenticate()){
                 //echo 333;

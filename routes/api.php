@@ -32,6 +32,10 @@ Route::any('/public/test','PublicController@test');
 
 Route::post('/uploads','ToolController@uploads');
 
+
+
+Route::get('/video','ToolController@video');
+
 //Route::get('/publish','PublishController@publish');
 Route::post('/signIn','ActivityController@signIn');
 Route::middleware(['refreshToken'])->group(function (){
@@ -44,9 +48,13 @@ Route::middleware(['refreshToken'])->group(function (){
 
 
 
+    Route::post('/auth','UserController@getAuthUser');
+
+
 });
 Route::middleware(['wechat.oauth'])->group(function (){
 
 });
-Route::post('wxlogin','LoginController@Wxlogin');
+Route::post('/wxlogin','LoginController@Wxlogin');
+//Route::post('/auth');
 
